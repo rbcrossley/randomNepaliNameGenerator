@@ -1,0 +1,17 @@
+{
+  "name": "randomnepalinamegenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "devInit": "echo \" \n ********Installing Client Packages********* \" && cd client && npm i && echo \" \n ******** Installing Server Packages ************ \" && cd ../server && npm i && echo \"Installing Main Packages \" && cd ../ && npm i && echo \"COMPLETED INSTALLING ALL PACKAGES\"",
+    "client": "echo \"Starting Client Vite Server \" && cd client && npm run dev",
+    "server": "echo \"Starting Express Server with Nodemon \" && nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
