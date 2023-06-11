@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo 'no test'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbcrossley/randomNepaliNameGenerator.git"
+  },
+  "keywords": [
+    "Nepali",
+    "Random",
+    "Name",
+    "Generator",
+    "Random",
+    "Name",
+    "Generator"
+  ],
+  "author": "HariAcharya80, Anuzpandey, rbcrossley",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/rbcrossley/randomNepaliNameGenerator/issues"
+  },
+  "homepage": "https://github.com/rbcrossley/randomNepaliNameGenerator#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mongoose": "^7.2.3"
+  }
+}
