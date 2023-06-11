@@ -1,3 +1,5 @@
+This repo is currently under dev mode and is not avilable for the preview at the deployment url.
+
 # Random Nepali Name Generator
 
 Generate random nepali name for Male and Female.
