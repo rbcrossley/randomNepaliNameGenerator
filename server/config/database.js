@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
-import {closeMongooseConnection, initMongooseConnection} from "./mongoose.js"
-import {chalkLog} from "../utils/chalk-log.js"
+import { closeMongooseConnection, initMongooseConnection } from "./mongoose.js"
+import { chalkLog } from "../utils/chalk-log.js"
 
-export const connect = () => {
+export const connect = async () => {
     initMongooseConnection()
     const db = mongoose.connection
 
