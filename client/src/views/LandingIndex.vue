@@ -37,6 +37,33 @@ const getRandomName = async (gender = "male") => {
     })
 }
 
+
+const previousCount = ref(2)
+
+const getPreviousName = () => {
+  if (previousCount.value > previousNames.value.length) {
+    return
+  }
+
+  let previousName = previousNames.value[previousNames.value.length - previousCount.value]
+  if (previousName) {
+    nameStore.setCurrentName(previousName)
+    previousCount.value++
+  }
+}
+
+const getNextName = () => {
+  if (previousCount.value === 2) {
+    return
+  }
+
+  previousCount.value--
+  let previousName = previousNames.value[previousNames.value.length - (previousCount.value - 1)]
+  if (previousName) {
+    nameStore.setCurrentName(previousName)
+  }
+}
+
 const playConfetti = () => {
   confetti({
     particleCount: 100,
@@ -74,6 +101,33 @@ const playConfetti = () => {
           <SolidButton title="Generate Male Name" @click="getRandomName('male')"/>
           <SolidButton button-type="secondary" title="Generate Female Name" @click="getRandomName('female')"/>
         </div>
+
+        <div class="mt-4 flex flex-col md:flex-row items-center justify-center gap-y-3 gap-x-6">
+          <SolidButton
+            v-if="previousNames.length > 1 && previousCount !== previousNames.length + 1"
+            button-type="transparent"
+            class="md:!w-40 w-full btn"
+            @click="getPreviousName"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Previous</span>
+          </SolidButton>
+
+          <SolidButton
+            v-if="previousCount !== 2"
+            button-type="transparent"
+            class="md:!w-40 w-full btn"
+            @click="getNextName"
+          >
+            <span>Next</span>
+            <svg aria-hidden="true" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </SolidButton>
+        </div>
+
       </div>
     </div>
 
