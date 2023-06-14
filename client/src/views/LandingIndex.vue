@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import confetti from "canvas-confetti"
 
 import { useNameStore } from "../stores/names.js"
@@ -12,18 +12,37 @@ import SolidButton from "../components/FormElements/SolidButton.vue"
 const nameStore = useNameStore()
 
 const currentName = computed(() => nameStore.currentName)
-const previousName = computed(() => nameStore.previousName)
-
+const previousNames = computed(() => nameStore.previousNames)
+const randomNames = computed(() => nameStore.randomNames)
+const currentGender = computed(() => nameStore.currentGender)
 
 const getRandomName = async (gender = "male") => {
+
+  previousCount.value = 2
+
+  if (randomNames.value.length > 0 && currentGender.value === gender) {
+    let newRandomName = randomNames.value[Math.floor(Math.random() * randomNames.value.length)]
+    nameStore.removeItemFromRandomNames(newRandomName._id)
+    nameStore.setPreviousName(newRandomName)
+    nameStore.setCurrentName(newRandomName)
+
+    playConfetti()
+
+    return
+  }
+
   await nameStore.getRandomName(gender)
     .then(() => {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.8 },
-      })
+      playConfetti()
     })
+}
+
+const playConfetti = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.8 },
+  })
 }
 </script>
 

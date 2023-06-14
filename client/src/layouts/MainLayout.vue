@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import TopBgElement from "../components/Abstract/TopBgElement.vue";
+import Logo from "../components/Logos/Logo.vue"
 </script>
 
 <template>
@@ -12,7 +13,7 @@ import TopBgElement from "../components/Abstract/TopBgElement.vue";
       <nav aria-label="Global" class="flex items-center justify-between">
         <div class="flex lg:flex-1">
           <a class="text-xl font-medium" href="#">
-            Nepali Names Generator
+            <Logo class="h-14"/>
           </a>
         </div>
 
