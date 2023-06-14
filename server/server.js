@@ -1,26 +1,17 @@
 import express from 'express'
-import mongoose from "mongoose"
-import dotenv from 'dotenv'
 import {namesRouter} from "./routes/v1/names.js"
-
-dotenv.config({
-    path: "./server/.env",  // This works
-    // path: ".env",        // This doesn't work :(
-})
+import * as Database from "./config/database.js"
+import {baseApiUrl, port} from "./config/dotenv.js"
+import cors from "cors"
 
 const app = express()
-const basePath = process.env.BASE_API_URL
-const databaseUrl = process.env.DATABASE_URL
 
-mongoose.connect(databaseUrl)
-const db = mongoose.connection
+Database.connect()
 
-db.on("error", console.error.bind(console, "connection error:"))
-db.once("open", () => console.log("Connected to MongoDB"))
-
-app.use(express.json())
+app.use(express.json())     // to support JSON-encoded bodies
+app.use(cors())             // to allow cross-origin requests
 
 // Routes
-app.use(`${basePath}/names`, namesRouter)
+app.use(`${baseApiUrl}/names`, namesRouter)
 
-app.listen(3001)
+app.listen(port)
