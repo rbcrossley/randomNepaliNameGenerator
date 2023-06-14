@@ -1,47 +1,29 @@
-<script lang="ts" setup>
-import axios from "axios"
-import {reactive, ref} from "vue"
+<script setup>
+import { computed } from "vue"
 import confetti from "canvas-confetti"
+
+import { useNameStore } from "../stores/names.js"
 
 import BottomBgElement from "../components/Abstract/BottomBgElement.vue"
 import SolidButton from "../components/FormElements/SolidButton.vue"
 
-const names = reactive({
-  male: [],
-  female: [],
-})
 
-const randomName = ref(null)
+// Names Related
+const nameStore = useNameStore()
+
+const currentName = computed(() => nameStore.currentName)
+const previousName = computed(() => nameStore.previousName)
+
 
 const getRandomName = async (gender = "male") => {
-  if (names[gender].length) {
-    setAndPopulateRandomName(gender)
-    return
-  }
-
-  await axios.get(`https://cdn.jsdelivr.net/gh/techgaun/nepali-names/${gender}.txt`)
-    .then(response => {
-      names[gender] = response.data?.split(/[\n\r]+/)
-
-      setAndPopulateRandomName(gender)
+  await nameStore.getRandomName(gender)
+    .then(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.8 },
+      })
     })
-    .catch(error => {
-      console.log(error.response)
-    })
-}
-
-const setAndPopulateRandomName = (gender = "male") => {
-  const randomIndex = Math.floor(
-    Math.random() * names[gender].length
-  )
-
-  randomName.value = names[gender][randomIndex]
-
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: {y: 0.8},
-  })
 }
 </script>
 
@@ -64,7 +46,7 @@ const setAndPopulateRandomName = (gender = "male") => {
         <div class="mt-8">
           <div class="w-full max-w-2xl mx-auto border-2 border-dashed rounded-lg h-32 p-8 flex items-center justify-center">
             <span id="name-placeholder" class="text-5xl">
-              <span>{{ randomName ?? "Random Name" }}</span>
+              <span>{{ currentName.name }}</span>
             </span>
           </div>
         </div>
