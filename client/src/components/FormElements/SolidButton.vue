@@ -12,7 +12,9 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 </script>
 
 <template>
-  <button :class="`btn-${buttonType}`">{{ title }}</button>
+  <button :class="`btn btn-${buttonType}`">
+    <slot>{{ title }}</slot>
+  </button>
 </template>
 
 <style scoped>

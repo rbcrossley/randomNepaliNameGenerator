@@ -1,46 +1,74 @@
-<script lang="ts" setup>
-import axios from "axios"
-import {reactive, ref} from "vue"
+<script setup>
+import { computed, ref } from "vue"
 import confetti from "canvas-confetti"
+
+import { useNameStore } from "../stores/names.js"
 
 import BottomBgElement from "../components/Abstract/BottomBgElement.vue"
 import SolidButton from "../components/FormElements/SolidButton.vue"
 
-const names = reactive({
-  male: [],
-  female: [],
-})
 
-const randomName = ref(null)
+// Names Related
+const nameStore = useNameStore()
+
+const currentName = computed(() => nameStore.currentName)
+const previousNames = computed(() => nameStore.previousNames)
+const randomNames = computed(() => nameStore.randomNames)
+const currentGender = computed(() => nameStore.currentGender)
 
 const getRandomName = async (gender = "male") => {
-  if (names[gender].length) {
-    setAndPopulateRandomName(gender)
+
+  previousCount.value = 2
+
+  if (randomNames.value.length > 0 && currentGender.value === gender) {
+    let newRandomName = randomNames.value[Math.floor(Math.random() * randomNames.value.length)]
+    nameStore.removeItemFromRandomNames(newRandomName._id)
+    nameStore.setPreviousName(newRandomName)
+    nameStore.setCurrentName(newRandomName)
+
+    playConfetti()
+
     return
   }
 
-  await axios.get(`https://cdn.jsdelivr.net/gh/techgaun/nepali-names/${gender}.txt`)
-    .then(response => {
-      names[gender] = response.data?.split(/[\n\r]+/)
-
-      setAndPopulateRandomName(gender)
-    })
-    .catch(error => {
-      console.log(error.response)
+  await nameStore.getRandomName(gender)
+    .then(() => {
+      playConfetti()
     })
 }
 
-const setAndPopulateRandomName = (gender = "male") => {
-  const randomIndex = Math.floor(
-    Math.random() * names[gender].length
-  )
 
-  randomName.value = names[gender][randomIndex]
+const previousCount = ref(2)
 
+const getPreviousName = () => {
+  if (previousCount.value > previousNames.value.length) {
+    return
+  }
+
+  let previousName = previousNames.value[previousNames.value.length - previousCount.value]
+  if (previousName) {
+    nameStore.setCurrentName(previousName)
+    previousCount.value++
+  }
+}
+
+const getNextName = () => {
+  if (previousCount.value === 2) {
+    return
+  }
+
+  previousCount.value--
+  let previousName = previousNames.value[previousNames.value.length - (previousCount.value - 1)]
+  if (previousName) {
+    nameStore.setCurrentName(previousName)
+  }
+}
+
+const playConfetti = () => {
   confetti({
     particleCount: 100,
     spread: 70,
-    origin: {y: 0.8},
+    origin: { y: 0.8 },
   })
 }
 </script>
@@ -64,7 +92,7 @@ const setAndPopulateRandomName = (gender = "male") => {
         <div class="mt-8">
           <div class="w-full max-w-2xl mx-auto border-2 border-dashed rounded-lg h-32 p-8 flex items-center justify-center">
             <span id="name-placeholder" class="text-5xl">
-              <span>{{ randomName ?? "Random Name" }}</span>
+              <span>{{ currentName.name }}</span>
             </span>
           </div>
         </div>
@@ -73,6 +101,33 @@ const setAndPopulateRandomName = (gender = "male") => {
           <SolidButton title="Generate Male Name" @click="getRandomName('male')"/>
           <SolidButton button-type="secondary" title="Generate Female Name" @click="getRandomName('female')"/>
         </div>
+
+        <div class="mt-4 flex flex-col md:flex-row items-center justify-center gap-y-3 gap-x-6">
+          <SolidButton
+            v-if="previousNames.length > 1 && previousCount !== previousNames.length + 1"
+            button-type="transparent"
+            class="md:!w-40 w-full btn"
+            @click="getPreviousName"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Previous</span>
+          </SolidButton>
+
+          <SolidButton
+            v-if="previousCount !== 2"
+            button-type="transparent"
+            class="md:!w-40 w-full btn"
+            @click="getNextName"
+          >
+            <span>Next</span>
+            <svg aria-hidden="true" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </SolidButton>
+        </div>
+
       </div>
     </div>
 
