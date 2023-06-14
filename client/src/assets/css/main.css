@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .btn-primary {
-    @apply rounded-md bg-indigo-500 px-6 py-2 w-full md:w-72 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-400 transition-colors;
+    @apply rounded-md bg-indigo-500 dark:bg-indigo-700 border-transparent px-6 py-2 w-full md:w-72 text-base font-semibold leading-7 text-white shadow-sm hover:bg-indigo-400 transition-colors;
 }
 
 .btn-secondary {
-    @apply rounded-md bg-pink-500 px-6 py-2 w-full md:w-72 text-base font-semibold leading-7 text-white shadow-sm hover:bg-pink-400 transition-colors;
+    @apply rounded-md bg-pink-500 dark:bg-pink-700 border-transparent px-6 py-2 w-full md:w-72 text-base font-semibold leading-7 text-white shadow-sm hover:bg-pink-400 transition-colors;
 }
