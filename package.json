@@ -10,7 +10,8 @@
     "pDevInit": "echo \" \n ********Installing Client Packages********* \" && cd client && pnpm install && echo \" \n ******** Installing Server Packages ************ \" && cd ../server && pnpm install && echo \"Installing Main Packages \" && cd ../ && pnpm install && echo \"COMPLETED INSTALLING ALL PACKAGES\"",
     "pClient": "echo \"Starting Client Vite Server \" && cd client && npm run dev",
     "server": "echo \"Starting Express Server with Nodemon \" && nodemon server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:seed": "node server/seeders/DatabaseSeeder.js"
   },
   "author": "",
   "license": "ISC",

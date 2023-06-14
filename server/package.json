@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/rbcrossley/randomNepaliNameGenerator#readme",
   "dependencies": {
+    "chalk": "^5.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",

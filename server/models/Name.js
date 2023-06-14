@@ -8,7 +8,11 @@ const nameSchema = new Schema({
         type: String,
         required: false,
     },
-    meaning: String,
+    meaning: {
+        type: String,
+        default: null,
+        required: false,
+    },
     meaning_np: {
         type: String,
         default: null,

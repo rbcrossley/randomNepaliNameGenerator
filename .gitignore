@@ -9,7 +9,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
 dist
 dist-ssr
 *.local
@@ -29,3 +28,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+server/node_moduless
+server/data
+server/.env
+server/.env.local
+server/.env.development
