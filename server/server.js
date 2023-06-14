@@ -6,7 +6,7 @@ import cors from "cors"
 
 const app = express()
 
-Database.connect()
+await Database.connect()
 
 app.use(express.json())     // to support JSON-encoded bodies
 app.use(cors())             // to allow cross-origin requests
@@ -14,4 +14,8 @@ app.use(cors())             // to allow cross-origin requests
 // Routes
 app.use(`${baseApiUrl}/names`, namesRouter)
 
-app.listen(port)
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`)
+})
+
+export default app

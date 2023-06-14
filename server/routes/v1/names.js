@@ -1,21 +1,20 @@
 import express from "express"
-const router = express.Router()
 import Name from "../../models/Name.js"
 
-router.get('/', async (request, response) => {
-    try {
-        const names = await Name.find()
-        response.send(names)
-    } catch (error) {
-        await response.status(500)
-            .json({
-                message: error.message,
-            })
-    }
+const router = express.Router()
+
+router.get('/random', async (request, response) => {
+    let gender = request.query.gender ?? 'male'
+
+    const pipelines = [
+        { $match: { gender: gender } },
+        { $sample: { size: 10 } },
+        { $project: { _id: 1, name: 1, name_np: 1, meaning: 1, meaning_np: 1, gender: 1 } }
+    ]
+
+    let names = await Name.aggregate(pipelines)
+
+    return response.send(names)
 })
 
-router.get('/:id', (request, response) => {
-
-})
-
-export {router as namesRouter}
+export { router as namesRouter }
